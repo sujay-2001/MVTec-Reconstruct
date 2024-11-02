@@ -91,6 +91,9 @@ MVTec-Reconstruct
 ├── model
 │   ├── sadnet.py
 │   ├── ...
+├── notebooks
+│   ├── train.ipynb
+│   ├── eval.ipynb
 ├── eval.py
 ├── train.py
 ├── losses.py
