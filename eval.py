@@ -1,13 +1,9 @@
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
 from tqdm import tqdm
 import os
-from PIL import Image
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
-import numpy as np
-import matplotlib.pyplot as plt
 from utils import DenoisingDataset
 from model.sadnet import SADNET
 from metrics import calculate_psnr, calculate_ssim
@@ -43,6 +39,7 @@ def main(config):
     prev_item = ''
     idx = 0
     for item, clean_images, degraded_images, masks in tqdm(val_loader):
+        item = item[0]
         if item != prev_item:
             idx = 0
         prev_item = item
@@ -115,10 +112,11 @@ def main(config):
         print(f"\nCategory: {category}")
         for item, value in ssim_item[category].items():
             print(f"  {item}: {value}")
-    for category in ssim_item:
+            
+    for category in val_psnr:
         print(f"\nCategory: {category}")
-        print("Overall PSNR:", val_psnr)
-        print("Overall SSIM:", val_ssim)
+        print("PSNR:", val_psnr[category])
+        print("SSIM:", val_ssim[category])
     
     data = []
     for category in psnr_item:
@@ -138,7 +136,7 @@ def main(config):
     df = pd.DataFrame(data)
 
     # Export to Excel
-    metrics_path = save_path + 'metrics.xlsx'
+    metrics_path = os.path.join(save_path, 'metrics.xlsx')
     df.to_excel(metrics_path, index=False)
     print(f"\nMetrics exported to {metrics_path}")
     

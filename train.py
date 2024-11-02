@@ -1,13 +1,7 @@
 import torch
-import torch.nn as nn
-import torch.optim as optim
 from tqdm import tqdm
-import os
-from PIL import Image
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
-import numpy as np
-import matplotlib.pyplot as plt
 from utils import DenoisingDataset
 from model.sadnet import SADNET
 from losses import MSELoss, PSNRLoss, L1Loss
@@ -108,7 +102,7 @@ def main(config):
                 # Compute PSNR
                 outputs = torch.clamp(outputs, 0, 1)
                 batch_psnr = calculate_psnr(clean_images, outputs, max_pixel_value=1.0)
-                batch_ssim = calculate_ssim(clean_images, outputs)
+                batch_ssim = calculate_ssim(clean_images, outputs, max_pixel_value=1.0)
                 val_psnr += batch_psnr * clean_images.size(0)
                 val_ssim += batch_ssim * clean_images.size(0)
 
