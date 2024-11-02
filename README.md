@@ -8,7 +8,7 @@ The MVTec Anomaly Detection (AD) dataset is widely used for benchmarking image a
 ## Our Approach
 We employed the SADNet model, a state-of-the-art denoising model, to reconstruct the degraded images. Since preserving defective regions is a key requirement, we used a weighted combination of MSELoss and L1Loss to ensure that more emphasis is exerted on regions masked as defective. Specifically, hyperparameters α (alpha) and β (beta) were introduced to create weights for each pixel such that more importance is given to defective regions (α + β * mask).
 
-![SADNet Model Block Diagram](https://github.com/sujay-2001/MVTec-Reconstruct/blob/gh-pages/assets/image.png)
+![SADNet Model Block Diagram](https://github.com/sujay-2001/MVTec-Reconstruct/blob/assets/image.png)
 
 Below is a brief overview of the process flow used in the model:
 - **Input**: Degraded images from the MVTec AD dataset.
