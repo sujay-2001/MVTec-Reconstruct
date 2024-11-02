@@ -75,9 +75,9 @@ python3 train.py
 You can download the model weights from the following links:
 | Input Size          | Link       | 
 |-------------------|------------|
-| 512x512 | [Download](https://drive.google.com/file/d/1Fw89b_zFvieYskDVl7DL9KEeDTw9zza4/view?usp=sharing)   |
-| 640x640 | [Download](https://drive.google.com/file/d/1zBuHLehW0v1hvsCnEM8ndchPYw7fWPY4/view?usp=sharing)      |
-| 800x800 | [Download](https://drive.google.com/file/d/1X3vwF9FE8houLr6OpR0zt30H6Wxh1ny1/view?usp=sharing)       |
+| 512x512 | [Download](https://drive.google.com/file/d/1vH_5TlHF3dFvl4ZEjcDpQEbMolIVlx62/view?usp=sharing)   |
+| 640x640 | [Download](https://drive.google.com/file/d/101xEBYZ9Lkjgxc4p3JUc6zqJ8fXLN7hq/view?usp=sharing)      |
+| 800x800 | [Download](https://drive.google.com/file/d/1ArQTastR1VzOEVQ-XU752GUnd_svwMbF/view?usp=sharing)       |
 
 
 ## Repository Organization
