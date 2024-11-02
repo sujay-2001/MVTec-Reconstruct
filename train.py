@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from tqdm.notebook import tqdm
+from tqdm import tqdm
 import os
 from PIL import Image
 from torch.utils.data import Dataset, DataLoader
@@ -11,12 +11,12 @@ import matplotlib.pyplot as plt
 from utils import DenoisingDataset
 from model.sadnet import SADNET
 from losses import MSELoss, PSNRLoss, L1Loss
-from metrics import calculate_psnr
+from metrics import calculate_psnr, calculate_ssim
 import yaml
 
 def main(config):
     transform = transforms.Compose([
-    transforms.Resize((512, 512)),
+    transforms.Resize((config['train']['input_size'], config['train']['input_size'])),
     transforms.ToTensor(),
     ])
 
@@ -57,7 +57,7 @@ def main(config):
         # Training phase
         denoising_model.train()
         train_loss = 0.0
-        for clean_images, degraded_images, masks in tqdm(train_loader):
+        for _, clean_images, degraded_images, masks in tqdm(train_loader):
             clean_images = clean_images.to(device)
             degraded_images = degraded_images.to(device)
             masks = masks.to(device)
@@ -89,8 +89,9 @@ def main(config):
         denoising_model.eval()
         val_loss = 0.0
         val_psnr = 0.0
+        val_ssim = 0.0
         with torch.no_grad():
-            for clean_images, degraded_images, masks in tqdm(val_loader):
+            for _, clean_images, degraded_images, masks in tqdm(val_loader):
                 clean_images = clean_images.to(device)
                 degraded_images = degraded_images.to(device)
                 masks = masks.to(device)
@@ -107,16 +108,20 @@ def main(config):
                 # Compute PSNR
                 outputs = torch.clamp(outputs, 0, 1)
                 batch_psnr = calculate_psnr(clean_images, outputs, max_pixel_value=1.0)
+                batch_ssim = calculate_ssim(clean_images, outputs)
                 val_psnr += batch_psnr * clean_images.size(0)
+                val_ssim += batch_ssim * clean_images.size(0)
 
 
         # Calculate average validation loss and accuracy
         epoch_val_loss = val_loss / len(val_loader.dataset)
         val_psnr /= len(val_loader.dataset)
+        val_ssim /= len(val_loader.dataset)
 
 
         print(f'Validation Loss: {epoch_val_loss:.4f}')
         print(f'Validation PSNR: {val_psnr:.4f}')
+        print(f'Validation SSIM: {val_ssim:.4f}')
 
         # Step the scheduler
         scheduler.step()

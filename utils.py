@@ -33,14 +33,14 @@ class DenoisingDataset(Dataset):
                         noisy_image = os.path.join(noisy_image_path, defect_type, file_name)
                         file_name = file_name.replace('.png', '_mask.png')
                         defect_mask = os.path.join(defect_mask_path, defect_type, file_name)
-                        image_paths.append((gt_clean_image, noisy_image, defect_mask))
+                        image_paths.append((item, gt_clean_image, noisy_image, defect_mask))
         return image_paths
 
     def __len__(self):
         return len(self.image_paths)
 
     def __getitem__(self, idx):
-        gt_clean_image_path, noisy_image_path, defect_mask_path = self.image_paths[idx]
+        item, gt_clean_image_path, noisy_image_path, defect_mask_path = self.image_paths[idx]
 
         gt_clean_image = Image.open(gt_clean_image_path).convert("RGB")
         noisy_image = Image.open(noisy_image_path).convert("RGB")
@@ -51,4 +51,4 @@ class DenoisingDataset(Dataset):
             noisy_image = self.transform(noisy_image)
             defect_mask = self.transform(defect_mask)
 
-        return gt_clean_image, noisy_image, defect_mask
+        return item, gt_clean_image, noisy_image, defect_mask
